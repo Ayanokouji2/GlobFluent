@@ -1,11 +1,9 @@
 import express from 'express'
+import userRouter from './Routes/user.route'
 
 const app : express.Application = express()
 
-
-app.get('/' , ( req : express.Request , res : express.Response) =>{
-    res.send('Hello World')
-})
+app.use('/api/v1/user', userRouter)
 
 
 
