@@ -3,6 +3,7 @@ import { Response, Request } from 'express';
 import userModel from '../Models/user.model'
 import ApiError from "../Utils/ApiError";
 import ApiResponse from "../Utils/ApiResponse";
+import bcrypt from 'bcrypt'
 
 
 export const getAllUser = asyncHandler(async (req: Request, res: Response) => {
@@ -41,17 +42,19 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
         throw new ApiError("User Error", " Please provide all the required fields", "400")
     }
 
-    const user = await userModel.findOne({ username }).select("-password")
+    const user = await userModel.findOne({ username })
+    console.log(user)
 
     if (!user) {
         throw new ApiError("User Error", "User not found", "404")
     }
 
-    const isMatch = await user.comparePassword(password)
+    const isMatch = await bcrypt.compare(password, user.password)
 
     if (!isMatch) {
         throw new ApiError("User Error", "Invalid credentials", "401")
     }
+    user.password = ''
 
     res.status(200).json(new ApiResponse(200, "User logged in successfully", user))
 })

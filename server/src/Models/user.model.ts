@@ -1,11 +1,10 @@
 import { Schema, model, Document } from 'mongoose';
 import bcrypt from 'bcrypt';
 
-export interface User extends Document {
+export interface User extends Document{
     username: string
     email: string
-    password: string
-    comparePassword(password : string) : Function
+    password: string 
 }
 
 const userSchema: Schema<User> = new Schema({
@@ -28,7 +27,7 @@ const userSchema: Schema<User> = new Schema({
     }
 })
 
-userSchema.pre('save', async function (next) : Promise<void> {
+userSchema.pre('save', async function ( next ) : Promise<void> {
     
     if(this.isModified('password')) {
         const hashedPassword = await bcrypt.hash(this.password, 12)
@@ -45,9 +44,7 @@ userSchema.pre('save', async function (next) : Promise<void> {
     // next()
 })
 
-userSchema.methods.comparePassword = async function ( password : string) {
-    return await bcrypt.compare(password, this.password)
-}
+
 
 const userModel = model<User>('User', userSchema)
 
