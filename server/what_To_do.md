@@ -1,8 +1,9 @@
 <!-- DASHBOARD -->
-/quiz
+/quiz ✅
 
 <!-- Individual Quiz -->
-/quiz/:id
+/quiz/:id ✅
 
-
+<!-- create quiz -->
+take the title and all the question with options and the correct options 
 
