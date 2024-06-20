@@ -9,7 +9,7 @@ router
     .get(getAllQuizes)
 
 router
-    .route("/quiz/:id")
+    .route("/:id")
     .get(getQuizById)
 
 
