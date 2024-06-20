@@ -28,13 +28,20 @@ const userSchema: Schema<User> = new Schema({
 })
 
 userSchema.pre('save', async function (next){
-
-    if(!this.isModified('password')) 
-        return next()
-
-    const hashedPassword = await bcrypt.hash(this.password, 12)
-    this.password = hashedPassword
+    
+    if(this.isModified('password')) {
+        const hashedPassword = await bcrypt.hash(this.password, 12)
+        this.password = hashedPassword
+    }
     next()
+
+
+    // if(!this.isModified('password')) 
+    //     return next()
+
+    // const hashedPassword = await bcrypt.hash(this.password, 12)
+    // this.password = hashedPassword
+    // next()
 })
 
 userSchema.methods.comparePassword = async function ( password : string){
