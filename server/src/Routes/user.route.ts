@@ -1,5 +1,5 @@
 import Router from 'express'
-import { getAllUser, registerUser } from '../Controller/user.controller'
+import { getAllUser, registerUser, loginUser } from '../Controller/user.controller'
 
 const router = Router()
 
@@ -8,7 +8,8 @@ router.get('/get-all-users', getAllUser)
 
 //users
 router.post('/register', registerUser ) 
-// router.post('/login', loginUser )
+
+router.post('/login', loginUser )
 
 
 export default router

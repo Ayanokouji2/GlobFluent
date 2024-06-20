@@ -5,6 +5,7 @@ export interface User extends Document {
     username: string
     email: string
     password: string
+    comparePassword(password : string) : Function
 }
 
 const userSchema: Schema<User> = new Schema({
@@ -27,7 +28,7 @@ const userSchema: Schema<User> = new Schema({
     }
 })
 
-userSchema.pre('save', async function (next){
+userSchema.pre('save', async function (next) : Promise<void> {
     
     if(this.isModified('password')) {
         const hashedPassword = await bcrypt.hash(this.password, 12)
@@ -44,9 +45,10 @@ userSchema.pre('save', async function (next){
     // next()
 })
 
-userSchema.methods.comparePassword = async function ( password : string){
+userSchema.methods.comparePassword = async function ( password : string) {
     return await bcrypt.compare(password, this.password)
 }
+
 const userModel = model<User>('User', userSchema)
 
 export default userModel
