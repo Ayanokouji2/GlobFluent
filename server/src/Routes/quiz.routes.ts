@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import { getAllQuizes, getQuizById } from '../Controller/quiz.controller'
+import { createQuiz, getAllQuizes, getQuizById } from '../Controller/quiz.controller'
 
 const router = Router()
 
@@ -11,6 +11,10 @@ router
 router
     .route("/:id")
     .get(getQuizById)
+
+router
+    .route("/create-quiz")
+    .post(createQuiz)
 
 
 export default router
