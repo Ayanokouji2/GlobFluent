@@ -6,20 +6,19 @@ import { verifyUser } from '../Middleware/auth.middleware'
 const router = Router()
 
 router
-    .route('/all-quiz')
+    .route('/all')
     .get(getAllQuizes)
 
 router
     .route("/:id")
     .get(getQuizById)
+    .post(verifyUser, addUserQuiz)
+    
 
 router
     .route("/create-quiz")
     .post(createQuiz)
 
-router
-    .use(verifyUser)
-    .route("/:id/secure-quiz-marks")
-    .post(addUserQuiz)
+
 
 export default router
