@@ -12,6 +12,8 @@ export const verifyUser = asyncHandler( async ( req : UserRequest, res : Respons
 
     const bearerToken : string = req.cookies.userAuthToken || req.headers.authorization?.replace("Bearer ","") || "" ;
 
+    console.log(bearerToken)
+
     if ( !bearerToken ) {
         return res.redirect( '/login' );
     }
