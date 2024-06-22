@@ -4,6 +4,7 @@ import userModel from '../Models/user.model'
 import ApiError from "../Utils/ApiError";
 import ApiResponse from "../Utils/ApiResponse";
 import bcrypt from 'bcrypt'
+import jwt, { JwtPayload, SignOptions } from 'jsonwebtoken'
 
 
 export const getAllUser = asyncHandler(async (req: Request, res: Response) => {
@@ -55,6 +56,10 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
         throw new ApiError("User Error", "Invalid credentials", "401")
     }
     user.password = ''
+
+    const token : string  = await jwt.sign({ _id : user._id as string } as JwtPayload , process.env.ACCESS_TOKEN as string, { expiresIn : '30m'} as SignOptions )
+
+    res.cookie('userAuthToken' , token as string , { httpOnly : true, secure : true, sameSite : 'none'} )
 
     res.status(200).json(new ApiResponse(200, "User logged in successfully", user))
 })

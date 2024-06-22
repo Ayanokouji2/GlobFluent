@@ -4,6 +4,8 @@ import { Request, Response } from 'express'
 import ApiResponse from '../Utils/ApiResponse';
 import ApiError from '../Utils/ApiError';
 import questionModel from '../Models/question.model';
+import userQuizModel from '../Models/user-quiz.model';
+import { UserRequest } from '../Middleware/auth.middleware';
 
 export const getAllQuizes = asyncHandler(async (req: Request, res: Response) => {
     const allQuizes = await quizModel.find();
@@ -45,15 +47,43 @@ export const createQuiz = asyncHandler(async (req: Request, res: Response): Prom
     if (!title || !questions || !marks )
         throw new ApiError("Quiz Error", "Please provide all the required fields")
 
-    const questionObject = await questionModel.insertMany(questions)
+    const questionObjects = await questionModel.insertMany(questions)
 
-    if(!questionObject)
+    if(!questionObjects || questionObjects.length === 0)
         throw new ApiError("Question Error", "Questions could not be created")
 
-    const questionsId = questionObject.map((ques )=>(ques._id))
+    const questionsId = questionObjects.map((ques )=>(ques._id))
 
     const createdQuiz = await quizModel.create({ title, questions: questionsId, marks })
 
     res.status(201).json(new ApiResponse(201, "Quiz created successfully", createdQuiz))
+
+})
+
+
+export const addUserQuiz = asyncHandler( async (req: UserRequest, res: Response) => {
+    const quizId : string = req.params.id
+
+    if(!quizId)
+        throw new ApiError("Quiz Error", "Please provide the quiz id")
+
+
+    const { scored } = req.body
+
+    if(!scored)
+        throw new ApiError("Quiz Error", "Please take the quiz to get the score")
+
+    const userId : string = req.user._id as string ?? null
+
+    if(!userId)  // Thinking of redirecting the user to login page
+        throw new ApiError("User Error", "Take the quiz after logging in")
+
+    const userQuiz = await userQuizModel.create({
+        user : userId,
+        quiz : quizId,
+        scored : scored
+    })
+
+    res.status(201).json(new ApiResponse(201, "Quiz taken successfully", userQuiz))
 
 })
