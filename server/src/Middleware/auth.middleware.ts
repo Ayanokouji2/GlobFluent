@@ -10,7 +10,7 @@ export interface UserRequest extends Request{
 
 export const verifyUser = asyncHandler( async ( req : UserRequest, res : Response, next : NextFunction ) => {
 
-    const bearerToken : string = req.headers.authorization?.replace("Bearer ","") || "" ;
+    const bearerToken : string = req.cookies.userAuthToken || req.headers.authorization?.replace("Bearer ","") || "" ;
 
     if ( !bearerToken ) {
         return res.redirect( '/login' );
