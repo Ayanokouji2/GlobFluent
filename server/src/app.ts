@@ -2,7 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 
-import userRouter from './Routes/user.route'
+import userRouter from './Routes/user.routes'
 import quizRouter from './Routes/quiz.routes'
 
 const app : express.Application = express()
