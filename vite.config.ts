@@ -6,6 +6,11 @@ export default defineConfig({
 	plugins: [react()],
 	define: {
 		'process.env': {}
+	},
+	server:{
+		proxy:{
+			'/api/v1' : "http://localhost:5000"
+		}
 	}
 })
 

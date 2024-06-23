@@ -1,17 +1,19 @@
-import { Routes, Route } from 'react-router-dom'
-import Dashboard from "./Components/Dashboard"
-import Login from './Components/Login'
-import Register from './Components/Register'
-import Navbar from './Components/Navbar'
-function App() {
-	return <div className='bg-gray-100 h-screen' >
-		<Navbar/>
-		<Routes>
-			<Route path='/' element={<Dashboard/>}/>
-			<Route path='/login' element={<Login/>}/>
-			<Route path='/register' element={<Register/>}/>
-		</Routes>
-	</div>
+import Home from './Components/home/Home'
+import { BrowserRouter as Router,Route,Routes } from 'react-router-dom'
+import Quiz from './Components/quiz/Quiz'
+import Dashboard from './Components/dashboard/Dashboard'
+import PostQuiz from './Components/post/PostQuiz'
+const App = () => {
+  return (
+    <Router>
+      <Routes>
+        <Route path='/' element={<Dashboard/>}></Route>
+        <Route path='/'element={<Home/>}></Route>
+        <Route path='/quiz/:id' element={<Quiz/>}></Route>
+        <Route path='/postquiz' element={<PostQuiz/>}></Route>
+      </Routes>
+    </Router>
+  )
 }
 
 export default App

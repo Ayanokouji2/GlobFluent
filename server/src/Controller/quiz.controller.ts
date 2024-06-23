@@ -40,11 +40,14 @@ export const getQuizById = asyncHandler(async (req: Request, res: Response) => {
 })
 
 
-export const createQuiz = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+export const createQuiz = asyncHandler(async (req: Request, res: Response) => {
 
-    const { title, questions, marks } = req.body
+    const { title, questions, marks, genre } = req.body
 
-    if (!title || !questions || !marks )
+    console.log(req.body)
+
+    if (!title || !questions || questions.length === 0
+         || !marks || !genre )
         throw new ApiError("Quiz Error", "Please provide all the required fields")
 
     const questionObjects = await questionModel.insertMany(questions)
@@ -54,14 +57,14 @@ export const createQuiz = asyncHandler(async (req: Request, res: Response): Prom
 
     const questionsId = questionObjects.map((ques )=>(ques._id))
 
-    const createdQuiz = await quizModel.create({ title, questions: questionsId, marks })
+    const createdQuiz = await quizModel.create({ title, questions: questionsId, marks, genre })
 
     res.status(201).json(new ApiResponse(201, "Quiz created successfully", createdQuiz))
 
 })
 
 
-export const addUserQuiz = asyncHandler( async (req: UserRequest, res: Response) => {
+export const userQuizReport = asyncHandler( async (req: UserRequest, res: Response) => {
     const quizId : string = req.params.id
 
     if(!quizId)

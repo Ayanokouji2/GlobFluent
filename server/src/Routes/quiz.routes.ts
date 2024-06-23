@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import { addUserQuiz, createQuiz, getAllQuizes, getQuizById } from '../Controller/quiz.controller'
+import { userQuizReport, createQuiz, getAllQuizes, getQuizById } from '../Controller/quiz.controller'
 import { verifyUser } from '../Middleware/auth.middleware'
 
 const router = Router()
@@ -9,16 +9,15 @@ router
     .route('/all')
     .get(getAllQuizes)
 
+
+router
+    .route("/create")
+    .post(createQuiz)
+
 router
     .route("/:id")
     .get(getQuizById)
-    .post(verifyUser, addUserQuiz)
+    .post(verifyUser, userQuizReport)
     
-
-router
-    .route("/create-quiz")
-    .post(createQuiz)
-
-
 
 export default router
